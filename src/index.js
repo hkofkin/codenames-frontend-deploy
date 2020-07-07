@@ -27,13 +27,13 @@ createGameButton.addEventListener("click", () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({room_code: generateRoomCode(4, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), turn: "orange", orange_words_left: 9, purple_words_left: 8})
+        body: JSON.stringify({room_code: generateRoomCode(4, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')})
     })
         .then(r => r.json())
         .then(newGameData => {
             displayGame(newGameData)
             wordsLeftNumber.textContent = newGameData.orange_words_left
-            teamColorTurn.textContent = newGameData.turn
+            teamColorTurn.textContent = "orange"
         })
 })
 
@@ -53,11 +53,20 @@ joinGameButton.addEventListener("click", () => {
           if (gameObj){
             // hide the join game form
             joinGameForm.style.display = "none"
-            displayGame(gameObj)  }
+            displayGame(gameObj)  
+            wordsLeftNumber.textContent = gameObj.orange_words_left
+            if (gameObj.orange_turn){
+              teamColorTurn.textContent = "orange"
+              wordsLeftNumber.textContent = gameObj.orange_words_left
+            }
+            else{
+              teamColorTurn.textContent = "purple"
+              wordsLeftNumber.textContent = gameObj.purple_words_left
+            }
+            
+          }
           else{
-        
-             // Maybe make the message flash instead?
-        
+                
             // if there is already an error message remove and redisplay error message
             // so the user can see that something is happening
             if (errorMessageText.textContent){
@@ -72,14 +81,87 @@ joinGameButton.addEventListener("click", () => {
   })
 })
 
-function createWordButton(game_word) {
+function createWordButton(game_word, gameObj) {
     const wordElement = document.createElement("p")
     wordElement.textContent = `${game_word.name}`
     wordElement.dataset.category = game_word.category
 
+    // event listener for clicking on a word
     wordElement.addEventListener("click", () => {
-        wordElement.className = game_word.category
+      wordElement.className = game_word.category
 
+      console.log(game_word)
+      console.log(gameObj)
+
+      const gameStatus = {}
+      // check the category
+      switch (true){
+        
+        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'orange')):
+          gameObj.orange_words_left -= 1
+          gameStatus.orange_words_left = gameObj.orange_words_left
+          break;
+        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'purple')):
+          // change the orange_turn to false
+          gameStatus.orange_turn = false
+          // purple_words_left -= 1
+          gameObj.purple_words_left -= 1
+          gameStatus.purple_words_left = gameObj.purple_words_left
+          break;
+
+        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'neutral')):
+          // post orange_words_left -= 1
+          gameStatus.orange_turn = false
+          break;
+
+        //purple turn
+        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'purple')):
+          gameObj.purple_words_left -= 1
+          gameStatus.purple_words_left = gameObj.purple_words_left
+          break;
+        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'orange')):
+          // change the orange_turn to true
+          gameStatus.orange_turn = true
+          // orange_words_left -= 1
+          gameObj.orange_words_left -= 1
+          gameStatus.orange_words_left = gameObj.orange_words_left
+          break;
+
+        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'neutral')):
+          // post orange_words_left -= 1
+          gameStatus.orange_turn = true
+    
+          break;
+
+        case (game_word.category === 'bomb'):
+          //game over
+          break;
+        
+      }
+      console.log(gameStatus)
+      // PATCH fetch (to update game and gameword guessed to true)
+      fetch(`http://localhost:3000/games/${gameObj.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(gameStatus),
+      })
+      .then(response => response.json())
+      .then(gameObj => {
+        // render the new wordcount and turn
+        if (gameObj.orange_turn){
+          teamColorTurn.textContent = "orange"
+          wordsLeftNumber.textContent = gameObj.orange_words_left
+        }
+        else{
+          teamColorTurn.textContent = "purple"
+          wordsLeftNumber.textContent = gameObj.purple_words_left
+        }
+        
+        
+      })
+      
     })
 
     wordContainer.append(wordElement)
@@ -96,7 +178,7 @@ function displayGame(gameObj){
   errorMessageText.textContent = ""
   roomCodeSpan.textContent = `${gameObj.room_code}`
   wordContainer.innerHTML = ""
-  gameObj.game_words.forEach(createWordButton)
+  gameObj.game_words.forEach(word => createWordButton(word, gameObj))
   console.log(gameObj)
 }
 // Initialize
