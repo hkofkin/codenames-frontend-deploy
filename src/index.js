@@ -11,16 +11,12 @@ const errorMessageText = document.querySelector("#join-error-message")
 const wordsLeftNumber = document.querySelector("#words-left")
 const teamColorTurn = document.querySelector("#team-color")
 
+let currentRoomCode = ""
+
 
 
 // Render Helpers
 createGameButton.addEventListener("click", () => {
-    // fetch("http://localhost:3000/words")
-    //     .then(r => r.json())
-    //     .then(wordData => {
-    //         wordContainer.innerHTML = ""
-    //         wordData.forEach(createWordButton)
-    //     })
 
     fetch("http://localhost:3000/games", {
         method: 'POST',
@@ -34,6 +30,7 @@ createGameButton.addEventListener("click", () => {
             displayGame(newGameData)
             wordsLeftNumber.textContent = newGameData.orange_words_left
             teamColorTurn.textContent = "orange"
+            currentRoomCode = newGameData.room_code
         })
 })
 
@@ -63,7 +60,7 @@ joinGameButton.addEventListener("click", () => {
               teamColorTurn.textContent = "purple"
               wordsLeftNumber.textContent = gameObj.purple_words_left
             }
-            
+            currentRoomCode = gameObj.room_code
           }
           else{
                 
@@ -87,82 +84,92 @@ function createWordButton(game_word, gameObj) {
     wordElement.dataset.category = game_word.category
 
     // event listener for clicking on a word
-    wordElement.addEventListener("click", () => {
-      wordElement.className = game_word.category
+    if (game_word.guessed === true) {
+        wordElement.className = game_word.category
+    } else {
+        wordElement.addEventListener("click", () => {
+            wordElement.className = game_word.category
 
-      console.log(game_word)
-      console.log(gameObj)
+            console.log(game_word)
+            console.log(gameObj)
 
-      const gameStatus = {}
-      // check the category
-      switch (true){
+            const gameStatus = {}
+            // check the category
+            switch (true){
+            
+            case ((teamColorTurn.textContent === "orange") && (game_word.category === 'orange')):
+                gameObj.orange_words_left -= 1
+                gameStatus.orange_words_left = gameObj.orange_words_left
+                break;
+            case ((teamColorTurn.textContent === "orange") && (game_word.category === 'purple')):
+                // change the orange_turn to false
+                gameStatus.orange_turn = false
+                // purple_words_left -= 1
+                gameObj.purple_words_left -= 1
+                gameStatus.purple_words_left = gameObj.purple_words_left
+                break;
+
+            case ((teamColorTurn.textContent === "orange") && (game_word.category === 'neutral')):
+                // post orange_words_left -= 1
+                gameStatus.orange_turn = false
+                break;
+
+            //purple turn
+            case ((teamColorTurn.textContent === "purple") && (game_word.category === 'purple')):
+                gameObj.purple_words_left -= 1
+                gameStatus.purple_words_left = gameObj.purple_words_left
+                break;
+            case ((teamColorTurn.textContent === "purple") && (game_word.category === 'orange')):
+                // change the orange_turn to true
+                gameStatus.orange_turn = true
+                // orange_words_left -= 1
+                gameObj.orange_words_left -= 1
+                gameStatus.orange_words_left = gameObj.orange_words_left
+                break;
+
+            case ((teamColorTurn.textContent === "purple") && (game_word.category === 'neutral')):
+                // post orange_words_left -= 1
+                gameStatus.orange_turn = true
         
-        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'orange')):
-          gameObj.orange_words_left -= 1
-          gameStatus.orange_words_left = gameObj.orange_words_left
-          break;
-        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'purple')):
-          // change the orange_turn to false
-          gameStatus.orange_turn = false
-          // purple_words_left -= 1
-          gameObj.purple_words_left -= 1
-          gameStatus.purple_words_left = gameObj.purple_words_left
-          break;
+                break;
 
-        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'neutral')):
-          // post orange_words_left -= 1
-          gameStatus.orange_turn = false
-          break;
-
-        //purple turn
-        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'purple')):
-          gameObj.purple_words_left -= 1
-          gameStatus.purple_words_left = gameObj.purple_words_left
-          break;
-        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'orange')):
-          // change the orange_turn to true
-          gameStatus.orange_turn = true
-          // orange_words_left -= 1
-          gameObj.orange_words_left -= 1
-          gameStatus.orange_words_left = gameObj.orange_words_left
-          break;
-
-        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'neutral')):
-          // post orange_words_left -= 1
-          gameStatus.orange_turn = true
-    
-          break;
-
-        case (game_word.category === 'bomb'):
-          //game over
-          break;
-        
-      }
-      console.log(gameStatus)
-      // PATCH fetch (to update game and gameword guessed to true)
-      fetch(`http://localhost:3000/games/${gameObj.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(gameStatus),
-      })
-      .then(response => response.json())
-      .then(gameObj => {
-        // render the new wordcount and turn
-        if (gameObj.orange_turn){
-          teamColorTurn.textContent = "orange"
-          wordsLeftNumber.textContent = gameObj.orange_words_left
-        }
-        else{
-          teamColorTurn.textContent = "purple"
-          wordsLeftNumber.textContent = gameObj.purple_words_left
-        }
-        
-        
-      })
-      
-    })
+            case (game_word.category === 'bomb'):
+                //game over
+                const winner = gameObj.orange_turn ? "Purple" : "Orange"
+                gameOver(gameObj, winner)
+                break;
+            
+            }
+            console.log(gameStatus)
+            // PATCH fetch (to update game and gameword guessed to true)
+            fetch(`http://localhost:3000/games/${gameObj.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(gameStatus),
+            })
+            .then(response => response.json())
+            .then(updatedGameObj => {
+            // render the new wordcount and turn
+                if (updatedGameObj.orange_turn){
+                    teamColorTurn.textContent = "orange"
+                    wordsLeftNumber.textContent = updatedGameObj.orange_words_left
+                    if (updatedGameObj.orange_words_left === 0) {
+                        gameOver(updatedGameObj, "Orange")
+                    }
+                }
+                else{
+                    teamColorTurn.textContent = "purple"
+                    wordsLeftNumber.textContent = updatedGameObj.purple_words_left
+                    if (updatedGameObj.purple_words_left === 0) {
+                        gameOver(updatedGameObj, "Purple")
+                    }
+                }
+                updateGameWord(game_word, updatedGameObj)
+            })
+        }, {once : true});
+    }
 
     wordContainer.append(wordElement)
 }
@@ -181,4 +188,42 @@ function displayGame(gameObj){
   gameObj.game_words.forEach(word => createWordButton(word, gameObj))
   console.log(gameObj)
 }
-// Initialize
+
+function updateGameWord(game_word, gameObj) {
+    fetch(`http://localhost:3000/game_words/${game_word.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({guessed: true}),
+        })
+        .then(response => response.json())
+        .then(updatedGameWord => {
+            const found_game_word = gameObj.game_words.find(game_word => game_word.id == updatedGameWord.id)
+            found_game_word.guessed = true
+        })
+}
+
+function deleteRound(gameObj) {
+    fetch(`http://localhost:3000/games/${gameObj.id}`, {
+        method: 'DELETE'
+    })
+        .then(r => r.text())
+        .then(console.log)
+}
+
+function createNewRound(currentRoomCode) {
+    fetch(`http://localhost:3000/games/${currentRoomCode}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({room_code: currentRoomCode}),
+    })
+        .then(response => response.json())
+        .then(newGameData => {
+            displayGame(newGameData)
+            wordsLeftNumber.textContent = newGameData.orange_words_left
+            teamColorTurn.textContent = "orange"
+        })
+}

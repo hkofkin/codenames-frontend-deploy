@@ -8,6 +8,7 @@
 </head>
 <body>
   <script type="text/javascript" src="src/index.js" defer></script>
+  <script type="text/javascript" src="src/modal.js" defer></script>
   <div>
     <h1>Welcome to Codenames</h1>
     <button id="create-game-button">Create Game</button>
@@ -30,10 +31,12 @@
     <section id="word-container">
 
     </section>
-  </div>
-  <div>
     <button>Spymaster View</button>
     <button>End Turn</button>
+  </div>
+  <div id="modal" style="display: none;" data-action="close">
+    <p>Game Over</p>
+    <button id="new-game-button">Start New Game</button>
   </div>
 </body>
 </html>
