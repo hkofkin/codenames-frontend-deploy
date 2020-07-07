@@ -8,6 +8,8 @@ const joinGameButton = document.querySelector("#join-game-button")
 const joinFormContainer = document.querySelector("#join-form-container")
 const joinGameForm = document.querySelector("#join-game-form")
 const errorMessageText = document.querySelector("#join-error-message")
+const wordsLeftNumber = document.querySelector("#words-left")
+const teamColorTurn = document.querySelector("#team-color")
 
 
 
@@ -25,11 +27,13 @@ createGameButton.addEventListener("click", () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({room_code: generateRoomCode(4, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')})
+        body: JSON.stringify({room_code: generateRoomCode(4, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), turn: "orange", orange_words_left: 9, purple_words_left: 8})
     })
         .then(r => r.json())
         .then(newGameData => {
             displayGame(newGameData)
+            wordsLeftNumber.textContent = newGameData.orange_words_left
+            teamColorTurn.textContent = newGameData.turn
         })
 })
 
@@ -71,6 +75,12 @@ joinGameButton.addEventListener("click", () => {
 function createWordButton(game_word) {
     const wordElement = document.createElement("p")
     wordElement.textContent = `${game_word.name}`
+    wordElement.dataset.category = game_word.category
+
+    wordElement.addEventListener("click", () => {
+        wordElement.className = game_word.category
+
+    })
 
     wordContainer.append(wordElement)
 }
