@@ -11,6 +11,15 @@
     <h1>Welcome to Codenames</h1>
     <button id="create-game-button">Create Game</button>
     <button id="join-game-button">Join Game</button>
+    <div id="join-form-container">
+      <form id="join-game-form" style="display:none">
+        <label for="code">Please enter the room code for the game you would like to join:</label>
+        <br>
+        <input type="text" id="room-code-input" name="code" placeholder="Room code...">
+        <input type="submit" value="Submit">
+      </form>
+      <p id="join-error-message" style = "color:red"></p>
+    </div>
     <hr>
   </div>
   <div>
