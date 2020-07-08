@@ -11,9 +11,13 @@
   <script type="text/javascript" src="src/index.js" defer></script>
   <script type="text/javascript" src="src/modal.js" defer></script>
   <div>
-    <h1>Welcome to Codenames</h1>
-    <button id="create-game-button">Create Game</button>
-    <button id="join-game-button">Join Game</button>
+    <section class="nav">
+      <h1>CODENAMES</h1>
+      <section class="nav-buttons">
+        <button id="create-game-button">CREATE GAME</button>
+        <button id="join-game-button">JOIN GAME</button>
+      </section>
+    </section>
     <div id="join-form-container">
       <form id="join-game-form" style="display:none">
         <label for="code">Please enter the room code for the game you would like to join:</label>
@@ -23,22 +27,26 @@
       </form>
       <p id="join-error-message" style = "color:red"></p>
     </div>
-    <hr>
+    <!-- <hr> -->
   </div>
   <div>
-    <h3>Room Code: <span id="room-code"></span></h3>
-    <h4>Words Left: <span id="words-left"></span></h4>
-    <h4>Turn: <span id="team-color"></span></h4>
+    <section id="game-info" style="display: none;">
+      <p>words left<br><span id="words-left"></span></p>
+      <p>room code<br><span id="room-code"></span></p>
+      <p>turn<br><span id="team-color"></span></p>
+    </section>
     <section id="word-container">
 
     </section>
-    <button>Spymaster View</button>
-    <button>End Turn</button>
+    <section id="bottom-buttons" style="display: none;">
+      <button id="spymaster-view-button">SPYMASTER VIEW</button>
+      <button id="end-turn-button">END TURN</button>
+    </section>
   </div>
   <div id="modal" style="display: none;" data-action="close">
+    <button id="new-game-button">START NEW GAME</button>
     <p>Game Over</p>
-    <p id="winner"></p>
-    <button id="new-game-button">Start New Game</button>
+    <p id="winner-tag"></p>
   </div>
 </body>
 </html>

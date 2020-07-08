@@ -8,9 +8,8 @@ newGameButton.addEventListener("click", (e) => {
 })
 
 function gameOver(gameObj, winner) {
-
     modal.style.display = "block"
-    const winnerTag = document.querySelector("#winner")
+    const winnerTag = document.querySelector("#winner-tag")
     winnerTag.textContent = `${winner} Team Wins`
 
     newGameButton.dataset.id = gameObj.id  
