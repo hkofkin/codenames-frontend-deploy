@@ -15,7 +15,6 @@ const bottomButtons = document.querySelector("#bottom-buttons")
 const endTurnButton = bottomButtons.querySelector("#end-turn-button")
 
 let currentRoomCode = ""
-let currentTurn = endTurnButton.dataset.turn
 
 // Render Helpers
 createGameButton.addEventListener("click", () => {
@@ -207,16 +206,16 @@ function endTurn(e){
     //     e.target.dataset.turn = "orange"
     // }
     
-    // // update who's turn it is (fetch)
+    // update who's turn it is (fetch)
     const gameId = e.target.dataset.id
     const data = {
         orange_turn: e.target.dataset.turn === "orange"
     }
     
     updateGame(gameId, data)
-    // // duplicated from line 120 - make into fn!!!!
+    // duplicated from line 120 - make into fn!!!!
     .then(updatedGameObj => {
-        // disaply turn and score on the dom
+        // display turn and score on the dom
         endTurnButton.dataset.turn = updatedGameObj.orange_turn ? "orange" : "purple";
             
             if (updatedGameObj.orange_turn){
@@ -228,7 +227,7 @@ function endTurn(e){
                 wordsLeftNumber.textContent = updatedGameObj.purple_words_left
             }
         }
-        )}
+    )}
 
 
 function toggle(attribute, value1, value2){
