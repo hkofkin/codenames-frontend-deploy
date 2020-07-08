@@ -12,6 +12,7 @@ const wordsLeftNumber = document.querySelector("#words-left")
 const teamColorTurn = document.querySelector("#team-color")
 const gameDataBar = document.querySelector("#game-info")
 const bottomButtons = document.querySelector("#bottom-buttons")
+const spymasterViewButton = document.querySelector("#spymaster-view-button")
 const endTurnButton = bottomButtons.querySelector("#end-turn-button")
 
 let currentRoomCode = ""
@@ -56,7 +57,8 @@ joinGameButton.addEventListener("click", () => {
 })
 
 function createWordButton(game_word, gameObj) {
-    const wordElement = document.createElement("p")
+    const wordElement = document.createElement("button")
+    wordElement.disabled = false
     wordElement.textContent = `${game_word.name}`
     wordElement.dataset.category = game_word.category
     wordElement.className = "word-element"
@@ -192,6 +194,27 @@ function displayErrors(){
         errorMessageText.textContent = "There was no room with that code. Please try again or create a new game.";
     }
 }
+
+spymasterViewButton.addEventListener("click", () => {
+
+    if (spymasterViewButton.textContent === "SPYMASTER VIEW: OFF") {
+        const foundWords = wordContainer.querySelectorAll(".word-element")
+        spymasterViewButton.textContent = "SPYMASTER VIEW: ON"
+
+        foundWords.forEach(foundWord => {
+            foundWord.className = "spymaster-on"
+            foundWord.disabled = true
+        })
+    } else {
+        const foundWords = wordContainer.querySelectorAll(".spymaster-on")
+        spymasterViewButton.textContent = "SPYMASTER VIEW: OFF"
+
+        foundWords.forEach(foundWord => {
+            foundWord.className = "word-element"
+            foundWord.disabled = false
+        })
+    }
+})
 
 // end turn event listener
 endTurnButton.addEventListener("click", (e) => endTurn(e))
