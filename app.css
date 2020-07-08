@@ -1,26 +1,179 @@
+/* FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300&display=swap');
+
+
+/* html * {
+    font-family: 'Montserrat', sans-serif;
+} */
+
+body {
+    margin: 0;
+}
+
+/* NAV BAR */
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
+    font-size: 1.6rem;
+    background-color: #F2F2F2;
+    background-size: cover;
+    padding: 0 0 0 20px;
+    border: 0px;
+    letter-spacing: 5px;
+}
+
+.nav button {
+    justify-content: flex-end;
+    background-color: black;
+    color: white;
+    border-style: none;
+    margin: 0 20px 0 0;
+    padding: 8px 28px 8px 28px;
+    border-radius: 3px;
+    font-size: .7rem;
+}
+
+.nav button:hover {
+    background-color: darkgray;
+    cursor: pointer;
+}
+
+.nav button:active {
+    background-color: gray;
+}
+
+
+/* GAME INFO BAR */
+#game-info {
+    border-style: solid;
+    border-width: 1.2px;
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-family: 'Arial', sans-serif;
+    font-weight: 100;
+    font-size: .7rem;
+    text-align: center;
+}
+
+#words-left {
+    font-size: 1.1rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+#room-code {
+    font-size: 1.2rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+#team-color {
+    font-size: 1.2rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+
+/* WORD GRID */
 #word-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    /* justify-content: center;
-    flex-wrap: wrap; */
+    font-family: 'Arial', sans-serif;
+    font-weight: 100;
+    font-size: 1rem;
+    text-align: center;
+    margin: 20px;
+}
+
+.word-element {
+    background-color: #F2F2F2;
+    margin: 5px;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.word-element:hover {
+    background-color: lightgray;
 }
 
 .orange {
-    color: orange;
+    background-color: #FF9E58;
+    margin: 5px;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .purple {
-    color: purple;
+    background-color: #A270F4;
+    margin: 5px;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .neutral {
-    color: gray;
+    background-color: #AEAEAE;
+    margin: 5px;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .bomb {
-    color: red;
+    background-color: #DD3333;
+    margin: 5px;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
 }
 
+
+/* BOTTOM BUTTONS */
+#bottom-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#spymaster-view-button {
+    background: none;
+    border-style: none;
+    margin: 0 0 0 20px;
+}
+
+#spymaster-view-button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#spymaster-view-button:active {
+    /* outline: 0; */
+}
+
+#end-turn-button {
+    justify-content: flex-end;
+    background-color: gray;
+    color: white;
+    border-style: none;
+    margin: 0 20px 0 0;
+    padding: 8px 28px 8px 28px;
+    border-radius: 3px;
+    font-size: .7rem;
+}
+
+#end-turn-button:hover {
+    background-color: #AEAEAE;
+    cursor: pointer;
+}
+
+
+/* MODAL */
 #modal {
     position: fixed;
     z-index: 1;
@@ -28,5 +181,32 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 1.6rem;
+    color: black;
+    line-height: 30px;
+    padding: 200px;
+  }
+
+  #new-game-button {
+    background-color: black;
+    color: white;
+    border-style: none;
+    /* margin: 0 20px 0 0; */
+    padding: 8px 28px 8px 28px;
+    border-radius: 3px;
+    font-size: 1rem;
+  }
+
+  #new-game-button:hover {
+      background-color: gray;
+      cursor: pointer;
+  }
+
+  #new-game-button:active {
+      background-color: darkgray;
+      /* outline: 0; */
   }
