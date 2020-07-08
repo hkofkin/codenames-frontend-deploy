@@ -18,14 +18,7 @@ let currentRoomCode = ""
 // Render Helpers
 createGameButton.addEventListener("click", () => {
 
-    fetch("http://localhost:3000/games", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({room_code: generateRoomCode(4, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')})
-    })
-        .then(r => r.json())
+    createGame()
         .then(newGameData => {
             displayGame(newGameData)
             wordsLeftNumber.textContent = newGameData.orange_words_left
@@ -43,36 +36,13 @@ joinGameButton.addEventListener("click", () => {
     e.preventDefault()
     const roomCode = e.target.code.value
     // fetch from the games to see if any have a room code that matches the value
-
-  fetch(`http://localhost:3000/games/${roomCode}`)
-        .then(r => r.json())
+      getGameByRoomCode(roomCode)
         .then(gameObj => {
           if (gameObj){
-            // hide the join game form
-            joinGameForm.style.display = "none"
-            displayGame(gameObj)  
-            wordsLeftNumber.textContent = gameObj.orange_words_left
-            if (gameObj.orange_turn){
-              teamColorTurn.textContent = "orange"
-              wordsLeftNumber.textContent = gameObj.orange_words_left
-            }
-            else{
-              teamColorTurn.textContent = "purple"
-              wordsLeftNumber.textContent = gameObj.purple_words_left
-            }
-            currentRoomCode = gameObj.room_code
+            displayGame(gameObj)             
           }
           else{
-                
-            // if there is already an error message remove and redisplay error message
-            // so the user can see that something is happening
-            if (errorMessageText.textContent){
-              errorMessageText.textContent = ""
-              setTimeout(function(){ errorMessageText.textContent = "There was no room with that code. Please try again or create a new game."; }, 400)
-            }
-            else{
-              errorMessageText.textContent = "There was no room with that code. Please try again or create a new game.";
-            }
+              displayErrors()
           }
         })
   })
@@ -89,9 +59,6 @@ function createWordButton(game_word, gameObj) {
     } else {
         wordElement.addEventListener("click", () => {
             wordElement.className = game_word.category
-
-            console.log(game_word)
-            console.log(gameObj)
 
             const gameStatus = {}
             // check the category
@@ -138,19 +105,11 @@ function createWordButton(game_word, gameObj) {
                 const winner = gameObj.orange_turn ? "Purple" : "Orange"
                 gameOver(gameObj, winner)
                 break;
-            
             }
             console.log(gameStatus)
-            // PATCH fetch (to update game and gameword guessed to true)
-            fetch(`http://localhost:3000/games/${gameObj.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(gameStatus),
-            })
-            .then(response => response.json())
-            .then(updatedGameObj => {
+            // PATCH fetch (to update game turn and score)
+            updateGame(gameObj.id, gameStatus)
+              .then(updatedGameObj => {
             // render the new wordcount and turn
                 if (updatedGameObj.orange_turn){
                     teamColorTurn.textContent = "orange"
@@ -183,49 +142,40 @@ function generateRoomCode(length, characters) {
 function displayGame(gameObj){
   // clear error message if any
   errorMessageText.textContent = ""
-  roomCodeSpan.textContent = `${gameObj.room_code}`
+  // hide join game form if open 
+  joinGameForm.style.display = "none"
+
+  displayGameDetails(gameObj)
+
   wordContainer.innerHTML = ""
   gameObj.game_words.forEach(word => createWordButton(word, gameObj))
   console.log(gameObj)
 }
 
-function updateGameWord(game_word, gameObj) {
-    fetch(`http://localhost:3000/game_words/${game_word.id}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({guessed: true}),
-        })
-        .then(response => response.json())
-        .then(updatedGameWord => {
-            const found_game_word = gameObj.game_words.find(game_word => game_word.id == updatedGameWord.id)
-            found_game_word.guessed = true
-        })
+function displayGameDetails(gameObj){
+  //display turn and score info
+  if (gameObj.orange_turn){
+    teamColorTurn.textContent = "orange"
+    wordsLeftNumber.textContent = gameObj.orange_words_left
+  }
+  else{
+    teamColorTurn.textContent = "purple"
+    wordsLeftNumber.textContent = gameObj.purple_words_left
+  }
+  // store room code in global variable and display on screen
+  currentRoomCode = gameObj.room_code
+  roomCodeSpan.textContent = `${gameObj.room_code}`
+  
 }
 
-function deleteRound(gameObj) {
-  console.log("gameObj.id:", gameObj.id)
-    fetch(`http://localhost:3000/games/${gameObj.id}`, {
-        method: 'DELETE'
-    })
-        .then(r => r.text())
-        .then(createNewRound(currentRoomCode))
-}
-
-function createNewRound(currentRoomCode) {
-    fetch(`http://localhost:3000/games/${currentRoomCode}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({room_code: currentRoomCode}),
-    })
-        .then(response => response.json())
-        .then(newGameData => {
-          gameObj = newGameData
-            displayGame(newGameData)
-            wordsLeftNumber.textContent = newGameData.orange_words_left
-            teamColorTurn.textContent = "orange"
-        })
+function displayErrors(){
+   // if there is already an error message remove and redisplay error message
+    // so the user can see that something is happening
+    if (errorMessageText.textContent){
+        errorMessageText.textContent = ""
+        setTimeout(function(){ errorMessageText.textContent = "There was no room with that code. Please try again or create a new game."; }, 400)
+    }
+    else{
+        errorMessageText.textContent = "There was no room with that code. Please try again or create a new game.";
+    }
 }
