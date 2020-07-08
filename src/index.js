@@ -12,6 +12,7 @@ const wordsLeftNumber = document.querySelector("#words-left")
 const teamColorTurn = document.querySelector("#team-color")
 const gameDataBar = document.querySelector("#game-info")
 const bottomButtons = document.querySelector("#bottom-buttons")
+const spymasterViewButton = document.querySelector("#spymaster-view-button")
 
 let currentRoomCode = ""
 
@@ -57,7 +58,8 @@ joinGameButton.addEventListener("click", () => {
 })
 
 function createWordButton(game_word, gameObj) {
-    const wordElement = document.createElement("p")
+    const wordElement = document.createElement("button")
+    wordElement.disabled = false
     wordElement.textContent = `${game_word.name}`
     wordElement.dataset.category = game_word.category
     wordElement.className = "word-element"
@@ -66,77 +68,78 @@ function createWordButton(game_word, gameObj) {
     if (game_word.guessed === true) {
         wordElement.className = game_word.category
     } else {
-        wordElement.addEventListener("click", () => {
-            wordElement.className = game_word.category
+        wordEventListener(wordElement, gameObj, game_word)
+        // wordElement.addEventListener("click", () => {
+        //     wordElement.className = game_word.category
 
-            const gameStatus = {}
-            // check the category
-            switch (true){
+        //     const gameStatus = {}
+        //     // check the category
+        //     switch (true){
             
-            case ((teamColorTurn.textContent === "orange") && (game_word.category === 'orange')):
-                gameObj.orange_words_left -= 1
-                gameStatus.orange_words_left = gameObj.orange_words_left
-                break;
-            case ((teamColorTurn.textContent === "orange") && (game_word.category === 'purple')):
-                // change the orange_turn to false
-                gameStatus.orange_turn = false
-                // purple_words_left -= 1
-                gameObj.purple_words_left -= 1
-                gameStatus.purple_words_left = gameObj.purple_words_left
-                break;
+        //     case ((teamColorTurn.textContent === "orange") && (game_word.category === 'orange')):
+        //         gameObj.orange_words_left -= 1
+        //         gameStatus.orange_words_left = gameObj.orange_words_left
+        //         break;
+        //     case ((teamColorTurn.textContent === "orange") && (game_word.category === 'purple')):
+        //         // change the orange_turn to false
+        //         gameStatus.orange_turn = false
+        //         // purple_words_left -= 1
+        //         gameObj.purple_words_left -= 1
+        //         gameStatus.purple_words_left = gameObj.purple_words_left
+        //         break;
 
-            case ((teamColorTurn.textContent === "orange") && (game_word.category === 'neutral')):
-                // post orange_words_left -= 1
-                gameStatus.orange_turn = false
-                break;
+        //     case ((teamColorTurn.textContent === "orange") && (game_word.category === 'neutral')):
+        //         // post orange_words_left -= 1
+        //         gameStatus.orange_turn = false
+        //         break;
 
-            //purple turn
-            case ((teamColorTurn.textContent === "purple") && (game_word.category === 'purple')):
-                gameObj.purple_words_left -= 1
-                gameStatus.purple_words_left = gameObj.purple_words_left
-                break;
-            case ((teamColorTurn.textContent === "purple") && (game_word.category === 'orange')):
-                // change the orange_turn to true
-                gameStatus.orange_turn = true
-                // orange_words_left -= 1
-                gameObj.orange_words_left -= 1
-                gameStatus.orange_words_left = gameObj.orange_words_left
-                break;
+        //     //purple turn
+        //     case ((teamColorTurn.textContent === "purple") && (game_word.category === 'purple')):
+        //         gameObj.purple_words_left -= 1
+        //         gameStatus.purple_words_left = gameObj.purple_words_left
+        //         break;
+        //     case ((teamColorTurn.textContent === "purple") && (game_word.category === 'orange')):
+        //         // change the orange_turn to true
+        //         gameStatus.orange_turn = true
+        //         // orange_words_left -= 1
+        //         gameObj.orange_words_left -= 1
+        //         gameStatus.orange_words_left = gameObj.orange_words_left
+        //         break;
 
-            case ((teamColorTurn.textContent === "purple") && (game_word.category === 'neutral')):
-                // post orange_words_left -= 1
-                gameStatus.orange_turn = true
+        //     case ((teamColorTurn.textContent === "purple") && (game_word.category === 'neutral')):
+        //         // post orange_words_left -= 1
+        //         gameStatus.orange_turn = true
         
-                break;
+        //         break;
 
-            case (game_word.category === 'bomb'):
-                //game over
-                const winner = gameObj.orange_turn ? "Purple" : "Orange"
-                gameOver(gameObj, winner)
-                break;
-            }
-            console.log(gameStatus)
-            // PATCH fetch (to update game turn and score)
-            updateGame(gameObj.id, gameStatus)
-              .then(updatedGameObj => {
-            // render the new wordcount and turn
-                if (updatedGameObj.orange_turn){
-                    teamColorTurn.textContent = "orange"
-                    wordsLeftNumber.textContent = updatedGameObj.orange_words_left
-                    if (updatedGameObj.orange_words_left === 0) {
-                        gameOver(updatedGameObj, "Orange")
-                    }
-                }
-                else{
-                    teamColorTurn.textContent = "purple"
-                    wordsLeftNumber.textContent = updatedGameObj.purple_words_left
-                    if (updatedGameObj.purple_words_left === 0) {
-                        gameOver(updatedGameObj, "Purple")
-                    }
-                }
-                updateGameWord(game_word, updatedGameObj)
-            })
-        }, {once : true});
+        //     case (game_word.category === 'bomb'):
+        //         //game over
+        //         const winner = gameObj.orange_turn ? "Purple" : "Orange"
+        //         gameOver(gameObj, winner)
+        //         break;
+        //     }
+        //     console.log(gameStatus)
+        //     // PATCH fetch (to update game turn and score)
+        //     updateGame(gameObj.id, gameStatus)
+        //         .then(updatedGameObj => {
+        //     // render the new wordcount and turn
+        //         if (updatedGameObj.orange_turn){
+        //             teamColorTurn.textContent = "orange"
+        //             wordsLeftNumber.textContent = updatedGameObj.orange_words_left
+        //             if (updatedGameObj.orange_words_left === 0) {
+        //                 gameOver(updatedGameObj, "Orange")
+        //             }
+        //         }
+        //         else{
+        //             teamColorTurn.textContent = "purple"
+        //             wordsLeftNumber.textContent = updatedGameObj.purple_words_left
+        //             if (updatedGameObj.purple_words_left === 0) {
+        //                 gameOver(updatedGameObj, "Purple")
+        //             }
+        //         }
+        //         updateGameWord(game_word, updatedGameObj)
+        //     })
+        // }, {once : true});
     }
 
     wordContainer.append(wordElement)
@@ -187,4 +190,99 @@ function displayErrors(){
     else{
         errorMessageText.textContent = "There was no room with that code. Please try again or create a new game.";
     }
+}
+
+spymasterViewButton.addEventListener("click", () => {
+
+    if (spymasterViewButton.textContent === "SPYMASTER VIEW: OFF") {
+        const foundWords = wordContainer.querySelectorAll(".word-element")
+        spymasterViewButton.textContent = "SPYMASTER VIEW: ON"
+
+        foundWords.forEach(foundWord => {
+            foundWord.className = "spymaster-on"
+            foundWord.disabled = true
+        })
+    } else {
+        const foundWords = wordContainer.querySelectorAll(".spymaster-on")
+        spymasterViewButton.textContent = "SPYMASTER VIEW: OFF"
+
+        foundWords.forEach(foundWord => {
+            foundWord.className = "word-element"
+            foundWord.disabled = false
+        })
+    }
+})
+
+function wordEventListener(word, game, game_word) {
+    word.addEventListener("click", () => {
+        word.className = game_word.category
+
+        const gameStatus = {}
+        // check the category
+        switch (true){
+        
+        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'orange')):
+            game.orange_words_left -= 1
+            gameStatus.orange_words_left = game.orange_words_left
+            break;
+        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'purple')):
+            // change the orange_turn to false
+            gameStatus.orange_turn = false
+            // purple_words_left -= 1
+            game.purple_words_left -= 1
+            gameStatus.purple_words_left = game.purple_words_left
+            break;
+
+        case ((teamColorTurn.textContent === "orange") && (game_word.category === 'neutral')):
+            // post orange_words_left -= 1
+            gameStatus.orange_turn = false
+            break;
+
+        //purple turn
+        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'purple')):
+            game.purple_words_left -= 1
+            gameStatus.purple_words_left = game.purple_words_left
+            break;
+        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'orange')):
+            // change the orange_turn to true
+            gameStatus.orange_turn = true
+            // orange_words_left -= 1
+            game.orange_words_left -= 1
+            gameStatus.orange_words_left = game.orange_words_left
+            break;
+
+        case ((teamColorTurn.textContent === "purple") && (game_word.category === 'neutral')):
+            // post orange_words_left -= 1
+            gameStatus.orange_turn = true
+    
+            break;
+
+        case (game_word.category === 'bomb'):
+            //game over
+            const winner = game.orange_turn ? "Purple" : "Orange"
+            gameOver(game, winner)
+            break;
+        }
+        console.log(gameStatus)
+        // PATCH fetch (to update game turn and score)
+        updateGame(game.id, gameStatus)
+            .then(updatedGameObj => {
+        // render the new wordcount and turn
+            if (updatedGameObj.orange_turn){
+                teamColorTurn.textContent = "orange"
+                wordsLeftNumber.textContent = updatedGameObj.orange_words_left
+                if (updatedGameObj.orange_words_left === 0) {
+                    gameOver(updatedGameObj, "Orange")
+                }
+            }
+            else{
+                teamColorTurn.textContent = "purple"
+                wordsLeftNumber.textContent = updatedGameObj.purple_words_left
+                if (updatedGameObj.purple_words_left === 0) {
+                    gameOver(updatedGameObj, "Purple")
+                }
+            }
+            updateGameWord(game_word, updatedGameObj)
+        })
+    }, {once : true});
 }
