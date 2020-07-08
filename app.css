@@ -1,10 +1,8 @@
 /* FONTS */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600&display=swap');
 
 
-/* html * {
-    font-family: 'Montserrat', sans-serif;
-} */
 
 body {
     margin: 0;
@@ -34,7 +32,9 @@ body {
     margin: 0 20px 0 0;
     padding: 8px 28px 8px 28px;
     border-radius: 3px;
-    font-size: .7rem;
+    font-size: .75rem;
+    font-family: 'Heebo', sans-serif;
+    letter-spacing: 1px;
 }
 
 .nav button:hover {
@@ -55,7 +55,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Heebo', sans-serif;
     font-weight: 100;
     font-size: .7rem;
     text-align: center;
@@ -63,18 +63,18 @@ body {
 
 #words-left {
     font-size: 1.1rem;
-    font-family: 'Arial', sans-serif;
-    font-weight: bold;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 500;
 }
 #room-code {
     font-size: 1.2rem;
-    font-family: 'Arial', sans-serif;
-    font-weight: bold;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 500;
 }
 #team-color {
     font-size: 1.2rem;
-    font-family: 'Arial', sans-serif;
-    font-weight: bold;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 500;
 }
 
 
@@ -82,7 +82,7 @@ body {
 #word-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    font-family: 'Arial', sans-serif;
+    font-family: 'Heebo', sans-serif;
     font-weight: 100;
     font-size: 1rem;
     text-align: center;
@@ -96,6 +96,8 @@ body {
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 .word-element:hover {
@@ -109,6 +111,8 @@ body {
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 .purple {
@@ -118,6 +122,8 @@ body {
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 .neutral {
@@ -127,6 +133,8 @@ body {
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 .bomb {
@@ -136,6 +144,8 @@ body {
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 
@@ -150,6 +160,9 @@ body {
     background: none;
     border-style: none;
     margin: 0 0 0 20px;
+    font-size: .75rem;
+    font-family: 'Heebo', sans-serif;
+    letter-spacing: .5px;
 }
 
 #spymaster-view-button:hover {
@@ -169,7 +182,9 @@ body {
     margin: 0 20px 0 0;
     padding: 8px 28px 8px 28px;
     border-radius: 3px;
-    font-size: .7rem;
+    font-size: .75rem;
+    font-family: 'Heebo', sans-serif;
+    letter-spacing: 1px;
 }
 
 #end-turn-button:hover {
@@ -188,7 +203,7 @@ body {
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.85);
     text-align: center;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Heebo', sans-serif;
     font-weight: 300;
     font-size: 1.6rem;
     color: black;
@@ -227,6 +242,8 @@ font-size: 1rem;
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 [data-category="purple"].spymaster-on {
@@ -237,6 +254,8 @@ font-size: 1rem;
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 [data-category="neutral"].spymaster-on {
@@ -247,6 +266,8 @@ font-size: 1rem;
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 [data-category="bomb"].spymaster-on {
@@ -257,6 +278,8 @@ font-size: 1rem;
     border-radius: 5px;
     text-align: center;
     border-style: none;
+    letter-spacing: .5px;
+    font-family: 'Heebo', sans-serif;
 }
 
 .disabled {
@@ -276,11 +299,12 @@ footer {
     position: fixed;
     left: 0;
     bottom: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Heebo', sans-serif;
 }
 
 footer a {
     color: #A270F4;
+    font-family: 'Heebo', sans-serif;
 }
 
 footer a:hover {
@@ -291,4 +315,46 @@ footer a:hover {
 footer a:active {
     color: gray;
     cursor: pointer;
+}
+
+
+/* JOIN GAME FORM */
+
+#join-game-form {
+    padding: 20px;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 400;
+    font-size: .9rem;
+    letter-spacing: .5px;
+}
+
+#room-code-input {
+    margin-top: 10px;
+    letter-spacing: .5px;
+
+}
+
+#join-game-submit {
+    letter-spacing: .5px;
+    background-color: gray;
+    color: white;
+    border-style: none;
+    border-radius: 3px;
+    padding: 5px 12px;
+    font-size: .7rem;
+}
+
+#join-game-submit:hover {
+    background-color: #AEAEAE;
+    cursor: pointer;
+}
+
+#join-error-message {
+    padding-left: 20px;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 300;
+    font-size: .9rem;
+    letter-spacing: .5px;
+    background-color: #DD3333;
+    color: white;
 }
