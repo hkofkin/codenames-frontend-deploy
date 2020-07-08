@@ -5,7 +5,7 @@ function createGame(){
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({room_code: generateRoomCode(4, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')})
+    body: JSON.stringify({room_code: generateRoomCode()})
   })
   .then(r => r.json())
 }

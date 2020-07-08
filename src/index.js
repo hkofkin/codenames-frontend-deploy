@@ -39,15 +39,15 @@ joinGameButton.addEventListener("click", () => {
   // nested listener for form submit
   joinGameForm.addEventListener("submit", e => {
     e.preventDefault()
-    const roomCode = e.target.code.value
+    const roomCode = e.target.code.value.toUpperCase().trim()
 
-    gameDataBar.style.display = "flex"
-    bottomButtons.style.display = "flex"
     // fetch from the games to see if any have a room code that matches the value
       getGameByRoomCode(roomCode)
         .then(gameObj => {
           if (gameObj){
-            displayGame(gameObj)             
+            displayGame(gameObj) 
+            gameDataBar.style.display = "flex"
+            bottomButtons.style.display = "flex"            
           }
           else{
               displayErrors()
@@ -144,12 +144,12 @@ function createWordButton(game_word, gameObj) {
     wordContainer.append(wordElement)
 }
 
-function generateRoomCode(length, characters) {
+function generateRoomCode() {
     // let result = "";
     // for (let i = length; i > 0; --i) result += characters[Math.floor(Math.random() * characters.length)];
     // return result;
 
-    return Math.random().toString(16).substr(2, 5);
+    return Math.random().toString(16).substr(2, 5).toUpperCase();
 }
 
 function displayGame(gameObj){
