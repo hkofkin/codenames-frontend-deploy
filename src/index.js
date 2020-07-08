@@ -10,6 +10,8 @@ const joinGameForm = document.querySelector("#join-game-form")
 const errorMessageText = document.querySelector("#join-error-message")
 const wordsLeftNumber = document.querySelector("#words-left")
 const teamColorTurn = document.querySelector("#team-color")
+const gameDataBar = document.querySelector("#game-info")
+const bottomButtons = document.querySelector("#bottom-buttons")
 
 let currentRoomCode = ""
 
@@ -17,6 +19,8 @@ let currentRoomCode = ""
 
 // Render Helpers
 createGameButton.addEventListener("click", () => {
+    gameDataBar.style.display = "flex"
+    bottomButtons.style.display = "flex"
 
     fetch("http://localhost:3000/games", {
         method: 'POST',
@@ -38,10 +42,14 @@ joinGameButton.addEventListener("click", () => {
   // show a form for submitting the room code
   joinGameForm.style.display = "block"
 
+
   // nested listener for form submit
   joinGameForm.addEventListener("submit", e => {
     e.preventDefault()
     const roomCode = e.target.code.value
+
+    gameDataBar.style.display = "flex"
+    bottomButtons.style.display = "flex"
     // fetch from the games to see if any have a room code that matches the value
 
   fetch(`http://localhost:3000/games/${roomCode}`)
@@ -82,6 +90,7 @@ function createWordButton(game_word, gameObj) {
     const wordElement = document.createElement("p")
     wordElement.textContent = `${game_word.name}`
     wordElement.dataset.category = game_word.category
+    wordElement.className = "word-element"
 
     // event listener for clicking on a word
     if (game_word.guessed === true) {
