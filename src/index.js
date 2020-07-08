@@ -144,9 +144,11 @@ function createWordButton(game_word, gameObj) {
 }
 
 function generateRoomCode(length, characters) {
-    let result = "";
-    for (let i = length; i > 0; --i) result += characters[Math.floor(Math.random() * characters.length)];
-    return result;
+    // let result = "";
+    // for (let i = length; i > 0; --i) result += characters[Math.floor(Math.random() * characters.length)];
+    // return result;
+
+    return Math.random().toString(16).substr(2, 5);
 }
 
 function displayGame(gameObj){
