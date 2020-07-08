@@ -188,10 +188,10 @@ function displayErrors(){
     // so the user can see that something is happening
     if (errorMessageText.textContent){
         errorMessageText.textContent = ""
-        setTimeout(function(){ errorMessageText.textContent = "There was no room with that code. Please try again or create a new game."; }, 400)
+        setTimeout(function(){ errorMessageText.textContent = "There is no room with that code. Please try again or create a new game."; }, 400)
     }
     else{
-        errorMessageText.textContent = "There was no room with that code. Please try again or create a new game.";
+        errorMessageText.textContent = "There is no room with that code. Please try again or create a new game.";
     }
 }
 
@@ -205,6 +205,9 @@ spymasterViewButton.addEventListener("click", () => {
             foundWord.className = "spymaster-on"
             foundWord.disabled = true
         })
+
+        endTurnButton.disabled = true
+        endTurnButton.className = "spymaster-on"
     } else {
         const foundWords = wordContainer.querySelectorAll(".spymaster-on")
         spymasterViewButton.textContent = "SPYMASTER VIEW: OFF"
@@ -213,6 +216,10 @@ spymasterViewButton.addEventListener("click", () => {
             foundWord.className = "word-element"
             foundWord.disabled = false
         })
+
+        endTurnButton.disabled = false
+        endTurnButton.className = ""
+
     }
 })
 

@@ -193,6 +193,19 @@ body {
 }
 
 
+#end-turn-button.spymaster-on {
+    justify-content: flex-end;
+    background-color: gray;
+    color: white;
+    border-style: none;
+    margin: 0 20px 0 0;
+    padding: 8px 28px 8px 28px;
+    border-radius: 3px;
+    font-size: .7rem;
+    cursor: not-allowed!important;
+}
+
+
 /* MODAL */
 #modal {
     position: fixed;
@@ -201,7 +214,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.5);
     text-align: center;
     font-family: 'Heebo', sans-serif;
     font-weight: 300;
