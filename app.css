@@ -170,10 +170,6 @@ body {
     cursor: pointer;
 }
 
-#spymaster-view-button:active {
-    /* outline: 0; */
-}
-
 #end-turn-button {
     justify-content: flex-end;
     background-color: gray;
@@ -182,7 +178,7 @@ body {
     margin: 0 20px 0 0;
     padding: 8px 28px 8px 28px;
     border-radius: 3px;
-    font-size: .75rem;
+    font-size: .7rem;
     font-family: 'Heebo', sans-serif;
     letter-spacing: 1px;
 }
@@ -214,7 +210,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.6);
     text-align: center;
     font-family: 'Heebo', sans-serif;
     font-weight: 300;
@@ -257,6 +253,7 @@ font-size: 1rem;
     border-style: none;
     letter-spacing: .5px;
     font-family: 'Heebo', sans-serif;
+    cursor: not-allowed!important;
 }
 
 [data-category="purple"].spymaster-on {
@@ -269,6 +266,7 @@ font-size: 1rem;
     border-style: none;
     letter-spacing: .5px;
     font-family: 'Heebo', sans-serif;
+    cursor: not-allowed!important;
 }
 
 [data-category="neutral"].spymaster-on {
@@ -281,6 +279,7 @@ font-size: 1rem;
     border-style: none;
     letter-spacing: .5px;
     font-family: 'Heebo', sans-serif;
+    cursor: not-allowed!important;
 }
 
 [data-category="bomb"].spymaster-on {
@@ -293,11 +292,12 @@ font-size: 1rem;
     border-style: none;
     letter-spacing: .5px;
     font-family: 'Heebo', sans-serif;
-}
-
-.disabled {
     cursor: not-allowed!important;
 }
+
+/* .disabled {
+    cursor: not-allowed!important;
+} */
 
 
 /* FOOTER */
