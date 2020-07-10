@@ -50,7 +50,7 @@ function deleteRound(gameId) {
         .then(r => r.text())
         .then(deleteData => {
           console.log("deleteData", deleteData)
-          createNewRound(currentRoomCode)
+          // createNewRound(currentRoomCode)
         })
 }
 
@@ -69,7 +69,7 @@ function createNewRound(currentRoomCode) {
           teamColorTurn.textContent = "orange"
           spymasterViewButton.textContent = "SPYMASTER VIEW: OFF"
           createGameRoomWebsocketConnection(currentRoomCode)
-
+          
           // console.log("creating new round--------------")
           // createGameRoomWebsocketConnection(currentRoomCode)
       })

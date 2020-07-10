@@ -3,9 +3,9 @@ const newGameButton = document.querySelector("#new-game-button")
 
 newGameButton.addEventListener("click", (e) => {  
     modal.style.display = "none"
-    deleteRound(endTurnButton.dataset.id)
+    // deleteRound(endTurnButton.dataset.id)
+    createNewRound(currentRoomCode)
 
-    // createNewRound(currentRoomCode)
     // createGameRoomWebsocketConnection(currentRoomCode)
 })
 
@@ -15,7 +15,7 @@ function gameOver(gameObj, winner) {
 
     window.setTimeout(displayAllColors, 300);
     
-    // window.setTimeout(displayModal, 700, gameObj, winner);    
+    window.setTimeout(displayModal, 700, gameObj, winner);    
 }
 
 function displayModal(gameObj, winner){
