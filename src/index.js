@@ -9,6 +9,8 @@ const joinFormContainer = document.querySelector("#join-form-container")
 const joinGameForm = document.querySelector("#join-game-form")
 const errorMessageText = document.querySelector("#join-error-message")
 const wordsLeftNumber = document.querySelector("#words-left")
+const wordsLeftNumberOrange = document.querySelector("#words-left-orange")
+const wordsLeftNumberPurple = document.querySelector("#words-left-purple")
 const teamColorTurn = document.querySelector("#team-color")
 const gameDataBar = document.querySelector("#game-info")
 const bottomButtons = document.querySelector("#bottom-buttons")
@@ -25,7 +27,8 @@ createGameButton.addEventListener("click", () => {
     createGame()
         .then(newGameData => {
             displayGame(newGameData)
-            wordsLeftNumber.textContent = newGameData.orange_words_left
+            wordsLeftNumberOrange.textContent = newGameData.orange_words_left
+            wordsLeftNumberPurple.textContent = newGameData.purple_words_left
             teamColorTurn.textContent = "orange"
             currentRoomCode = newGameData.room_code
             createGameRoomWebsocketConnection(currentRoomCode)
@@ -127,14 +130,14 @@ function createWordButton(game_word, gameObj) {
             // render the new wordcount and turn
                 if (updatedGameObj.orange_turn){
                     teamColorTurn.textContent = "orange"
-                    wordsLeftNumber.textContent = updatedGameObj.orange_words_left
+                    wordsLeftNumberOrange.textContent = updatedGameObj.orange_words_left
                     if (updatedGameObj.orange_words_left === 0) {
                         gameOver(updatedGameObj, "Orange")
                     }
                 }
                 else{
                     teamColorTurn.textContent = "purple"
-                    wordsLeftNumber.textContent = updatedGameObj.purple_words_left
+                    wordsLeftNumberPurple.textContent = updatedGameObj.purple_words_left
                     if (updatedGameObj.purple_words_left === 0) {
                         gameOver(updatedGameObj, "Purple")
                     }
@@ -172,11 +175,13 @@ function displayGameDetails(gameObj){
   //display turn and score info
   if (gameObj.orange_turn){
     teamColorTurn.textContent = "orange"
-    wordsLeftNumber.textContent = gameObj.orange_words_left
+    wordsLeftNumberOrange.textContent = gameObj.orange_words_left
+    wordsLeftNumberPurple.textContent = gameObj.purple_words_left
   }
   else{
     teamColorTurn.textContent = "purple"
-    wordsLeftNumber.textContent = gameObj.purple_words_left
+    wordsLeftNumberOrange.textContent = gameObj.orange_words_left
+    wordsLeftNumberPurple.textContent = gameObj.purple_words_left
   }
   // store room code in global variable and display on screen
   currentRoomCode = gameObj.room_code
@@ -253,11 +258,13 @@ function endTurn(e){
             
             if (updatedGameObj.orange_turn){
                 teamColorTurn.textContent = "orange"
-                wordsLeftNumber.textContent = updatedGameObj.orange_words_left
+                wordsLeftNumberOrange.textContent = updatedGameObj.orange_words_left
+                wordsLeftNumberPurple.textContent = updatedGameObj.purple_words_left
             }
             else{
                 teamColorTurn.textContent = "purple"
-                wordsLeftNumber.textContent = updatedGameObj.purple_words_left
+                wordsLeftNumberOrange.textContent = updatedGameObj.orange_words_left
+                wordsLeftNumberPurple.textContent = updatedGameObj.purple_words_left
             }
         }
     )}
@@ -313,7 +320,8 @@ function createGameRoomWebsocketConnection(roomCode) {
             renderGameWord(msg.message)
             // updateGameWord(msg.message, endTurnButton.dataset.id)
             console.log("THIS IS RENDERING THE NEW GAME WORD", msg)
-        } else if (msg.message.orange_words_left) {
+        } else if (msg.message.room_code) {
+            console.log(msg.message)
             renderGame(msg.message)
             console.log("THIS IS RENDERING THE UPDATED GAME", msg)
         }
@@ -339,15 +347,17 @@ function renderGameWord(gameWord) {
 function renderGame(gameObj) {
     if (gameObj.orange_turn) {
         teamColorTurn.textContent = "orange"
-        wordsLeftNumber.textContent = gameObj.orange_words_left
+        wordsLeftNumberOrange.textContent = gameObj.orange_words_left 
     } else {
         teamColorTurn.textContent = "purple"
-        wordsLeftNumber.textContent = gameObj.purple_words_left
+        wordsLeftNumberPurple.textContent = gameObj.purple_words_left 
     }
 
-    const winner = gameObj.orange_turn ? "Orange" : "Purple"
-
-    if (wordsLeftNumber === 0 && modal.style.display === "none") {
-        gameOver(gameObj, winner)
-    } 
+    // if (wordsLeftNumber === 0 && modal.style.display === "none") {
+    //     const winner = gameObj.orange_turn ? "Orange" : "Purple"
+    //     displayAllColors()
+    //     modal.style.display = "block"
+    //     const winnerTag = document.querySelector("#winner-tag")
+    //     winnerTag.textContent = `${winner} Team Wins`
+    // } 
 }

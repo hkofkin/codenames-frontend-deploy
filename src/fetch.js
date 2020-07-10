@@ -36,8 +36,9 @@ function updateGameWord(game_word, gameObj) {
       })
       .then(response => response.json())
       .then(updatedGameWord => {
-          // const foundGameWord = gameObj.game_words.find(game_word => game_word.id == updatedGameWord.id)
-          // foundGameWord.guessed = true
+          const foundGameWord = gameObj.game_words.find(game_word => game_word.id == updatedGameWord.id)
+          foundGameWord.guessed = true
+          
           console.log("updatedGameWord", updatedGameWord)
       })
 }

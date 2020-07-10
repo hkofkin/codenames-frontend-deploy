@@ -61,11 +61,27 @@ body {
     text-align: center;
 }
 
-#words-left {
+#words-left-orange {
     font-size: 1.1rem;
     font-family: 'Heebo', sans-serif;
     font-weight: 500;
+    color: #FF9E58;
 }
+
+#words-left-purple {
+    font-size: 1.1rem;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 500;
+    color: #A270F4;
+}
+
+#words-left-dash {
+    font-size: 1.1rem;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 500;
+    color: black;
+}
+
 #room-code {
     font-size: 1.2rem;
     font-family: 'Heebo', sans-serif;
@@ -244,7 +260,7 @@ font-size: 1rem;
 /* SPYMASTER VIEW */
 
 [data-category="orange"].spymaster-on {
-    color: orange;
+    color: #FF9E58;
     background-color: #F2F2F2;
     margin: 5px;
     padding: 20px;
