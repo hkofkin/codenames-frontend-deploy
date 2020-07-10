@@ -48,7 +48,8 @@ joinGameButton.addEventListener("click", () => {
           if (gameObj){
             displayGame(gameObj) 
             gameDataBar.style.display = "flex"
-            bottomButtons.style.display = "flex"            
+            bottomButtons.style.display = "flex"
+            createGameRoomWebsocketConnection(roomCode)
           }
           else{
               displayErrors()
@@ -63,6 +64,7 @@ function createWordButton(game_word, gameObj) {
     wordElement.textContent = `${game_word.name}`
     wordElement.dataset.category = game_word.category
     wordElement.className = "word-element"
+    wordElement.id = game_word.id
 
     // event listener for clicking on a word
     if (game_word.guessed === true) {
@@ -279,11 +281,12 @@ function createGameRoomWebsocketConnection(roomCode) {
     socket = new WebSocket('ws://localhost:3000/cable');
      // When the connection is first created, this code runs subscribing the client to a specific chatroom stream in the ChatRoomChannel.
     socket.onopen = function(event) {
+        console.log(event)
         console.log('WebSocket is connected.');
         const msg = {
             command: 'subscribe',
             identifier: JSON.stringify({
-                roomCode: roomCode,
+                room_code: roomCode,
                 channel: 'GameRoomChannel'
             }),
         };
@@ -306,9 +309,13 @@ function createGameRoomWebsocketConnection(roomCode) {
         console.log("FROM RAILS: ", msg);
         
         // Renders any newly created messages onto the page.
-        if (msg.message) {
-            // renderMessage(msg.message)
-            console.log(msg.message)
+        if (msg.message.category) {
+            renderGameWord(msg.message)
+            // updateGameWord(msg.message, endTurnButton.dataset.id)
+            console.log("THIS IS RENDERING THE NEW GAME WORD", msg)
+        } else if (msg.message.orange_words_left) {
+            renderGame(msg.message)
+            console.log("THIS IS RENDERING THE UPDATED GAME", msg)
         }
         
     };
@@ -317,4 +324,30 @@ function createGameRoomWebsocketConnection(roomCode) {
     socket.onerror = function(error) {
         console.log('WebSocket Error: ' + error);
     };
+}
+
+
+function renderGameWord(gameWord) {
+    let wordButton = document.getElementById(`${gameWord.id}`)
+    wordButton.className = gameWord.category;
+
+    // if (gameWord.category === "bomb" && modal.style.display === "none") {
+    //     gameOver()
+    // }
+}
+
+function renderGame(gameObj) {
+    if (gameObj.orange_turn) {
+        teamColorTurn.textContent = "orange"
+        wordsLeftNumber.textContent = gameObj.orange_words_left
+    } else {
+        teamColorTurn.textContent = "purple"
+        wordsLeftNumber.textContent = gameObj.purple_words_left
+    }
+
+    const winner = gameObj.orange_turn ? "Orange" : "Purple"
+
+    if (wordsLeftNumber === 0 && modal.style.display === "none") {
+        gameOver(gameObj, winner)
+    } 
 }
