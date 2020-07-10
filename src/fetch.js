@@ -50,6 +50,7 @@ function deleteRound(gameId) {
         .then(r => r.text())
         .then(deleteData => {
           console.log("deleteData", deleteData)
+          createNewRound(currentRoomCode)
         })
 }
 
