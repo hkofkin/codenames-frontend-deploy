@@ -4,6 +4,7 @@ const newGameButton = document.querySelector("#new-game-button")
 newGameButton.addEventListener("click", (e) => {  
     modal.style.display = "none"
     createNewRound(currentRoomCode)
+    // createGameRoomWebsocketConnection(currentRoomCode)
 })
 
 function gameOver(gameObj, winner) {

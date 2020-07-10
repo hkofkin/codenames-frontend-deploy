@@ -64,7 +64,11 @@ function createNewRound(currentRoomCode) {
       .then(response => response.json())
       .then(newGameData => {
           displayGame(newGameData)
-          wordsLeftNumber.textContent = newGameData.orange_words_left
+          // wordsLeftNumber.textContent = newGameData.orange_words_left
           teamColorTurn.textContent = "orange"
+          createGameRoomWebsocketConnection(currentRoomCode)
+
+          // console.log("creating new round--------------")
+          // createGameRoomWebsocketConnection(currentRoomCode)
       })
 }
