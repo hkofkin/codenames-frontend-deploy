@@ -28,6 +28,7 @@ createGameButton.addEventListener("click", () => {
             wordsLeftNumber.textContent = newGameData.orange_words_left
             teamColorTurn.textContent = "orange"
             currentRoomCode = newGameData.room_code
+            createGameRoomWebsocketConnection(currentRoomCode)
         })
 })
 
@@ -267,4 +268,53 @@ function toggle(attribute, value1, value2){
     else{
         return value1
     }
+}
+
+
+// WEBSOCKET
+
+function createGameRoomWebsocketConnection(roomCode) {
+    
+    // Creates the new WebSocket connection.
+    socket = new WebSocket('ws://localhost:3000/cable');
+     // When the connection is first created, this code runs subscribing the client to a specific chatroom stream in the ChatRoomChannel.
+    socket.onopen = function(event) {
+        console.log('WebSocket is connected.');
+        const msg = {
+            command: 'subscribe',
+            identifier: JSON.stringify({
+                roomCode: roomCode,
+                channel: 'GameRoomChannel'
+            }),
+        };
+        socket.send(JSON.stringify(msg));
+    };
+    
+    // When the connection is closed, this code will run.
+    socket.onclose = function(event) {
+         console.log('WebSocket is closed.');
+    };
+    // When a message is received through the websocket, this code will run.
+    socket.onmessage = function(event) {            
+        const response = event.data;
+        const msg = JSON.parse(response);
+        
+        // Ignores pings.
+        if (msg.type === "ping") {
+            return;
+        }
+        console.log("FROM RAILS: ", msg);
+        
+        // Renders any newly created messages onto the page.
+        if (msg.message) {
+            // renderMessage(msg.message)
+            console.log(msg.message)
+        }
+        
+    };
+    
+    // When an error occurs through the websocket connection, this code is run printing the error message.
+    socket.onerror = function(error) {
+        console.log('WebSocket Error: ' + error);
+    };
 }
