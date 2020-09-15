@@ -10,6 +10,7 @@
   <script type="text/javascript" src="src/fetch.js" defer></script>
   <script type="text/javascript" src="src/index.js" defer></script>
   <script type="text/javascript" src="src/modal.js" defer></script>
+  <script type="text/javascript" src="src/websocket.js" defer></script>
   <div>
     <section class="nav">
       <h1>CODENAMES</h1>
@@ -30,7 +31,7 @@
   </div>
   <div>
     <section id="game-info" style="display: none;">
-      <p>words left<br><span id="words-left"></span></p>
+      <p>words left<br><span id="words-left-orange"></span> <span id="words-left-dash">-</span> <span id="words-left-purple"></span></p>
       <p>room code<br><span id="room-code"></span></p>
       <p>turn<br><span id="team-color"></span></p>
     </section>
@@ -38,13 +39,13 @@
 
     </section>
     <section id="bottom-buttons" style="display: none;">
-      <button id="spymaster-view-button" aria-pressed="false">SPYMASTER VIEW: OFF</button>
+      <button id="spymaster-view-button">SPYMASTER VIEW: OFF</button>
       <button id="end-turn-button">END TURN</button>
     </section>
   </div>
   <div id="modal" style="display: none;" data-action="close">
     <button id="new-game-button">START NEW GAME</button>
-    <p>Game Over</p>
+    <p id="game-over">Game Over</p>
     <p id="winner-tag"></p>
   </div>
 </body>

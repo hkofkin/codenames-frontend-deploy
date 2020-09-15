@@ -61,11 +61,27 @@ body {
     text-align: center;
 }
 
-#words-left {
-    font-size: 1.1rem;
+#words-left-orange {
+    font-size: 1.2rem;
     font-family: 'Heebo', sans-serif;
     font-weight: 500;
+    color: #FF9E58;
 }
+
+#words-left-purple {
+    font-size: 1.2rem;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 500;
+    color: #A270F4;
+}
+
+#words-left-dash {
+    font-size: 1.2rem;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 500;
+    color: black;
+}
+
 #room-code {
     font-size: 1.2rem;
     font-family: 'Heebo', sans-serif;
@@ -210,7 +226,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.534);
     text-align: center;
     font-family: 'Heebo', sans-serif;
     font-weight: 300;
@@ -221,13 +237,29 @@ body {
   }
 
 #new-game-button {
-background-color: black;
-color: white;
-border-style: none;
-/* margin: 0 20px 0 0; */
-padding: 8px 28px 8px 28px;
-border-radius: 3px;
-font-size: 1rem;
+    background-color: black;
+    color: white;
+    border-style: none;
+    /* margin: 0 20px 0 0; */
+    padding: 8px 28px 8px 28px;
+    border-radius: 3px;
+    font-size: 1rem;
+    font-family: 'Heebo', sans-serif;
+    letter-spacing: 1px;
+}
+
+#game-over {
+    font-size: 2rem;
+    font-family: 'Heebo', sans-serif;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+#winner-tag {
+    font-size: 2rem;
+    font-family: 'Heebo', sans-serif;
+    letter-spacing: 1px;
+    font-weight: 400;
 }
 
 #new-game-button:hover {
@@ -244,7 +276,7 @@ font-size: 1rem;
 /* SPYMASTER VIEW */
 
 [data-category="orange"].spymaster-on {
-    color: orange;
+    color: #FF9E58;
     background-color: #F2F2F2;
     margin: 5px;
     padding: 20px;

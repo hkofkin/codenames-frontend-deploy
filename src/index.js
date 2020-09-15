@@ -9,6 +9,8 @@ const joinFormContainer = document.querySelector("#join-form-container")
 const joinGameForm = document.querySelector("#join-game-form")
 const errorMessageText = document.querySelector("#join-error-message")
 const wordsLeftNumber = document.querySelector("#words-left")
+const wordsLeftNumberOrange = document.querySelector("#words-left-orange")
+const wordsLeftNumberPurple = document.querySelector("#words-left-purple")
 const teamColorTurn = document.querySelector("#team-color")
 const gameDataBar = document.querySelector("#game-info")
 const bottomButtons = document.querySelector("#bottom-buttons")
@@ -25,9 +27,11 @@ createGameButton.addEventListener("click", () => {
     createGame()
         .then(newGameData => {
             displayGame(newGameData)
-            wordsLeftNumber.textContent = newGameData.orange_words_left
+            wordsLeftNumberOrange.textContent = newGameData.orange_words_left
+            wordsLeftNumberPurple.textContent = newGameData.purple_words_left
             teamColorTurn.textContent = "orange"
             currentRoomCode = newGameData.room_code
+            createGameRoomWebsocketConnection(currentRoomCode)
         })
 })
 
@@ -47,7 +51,8 @@ joinGameButton.addEventListener("click", () => {
           if (gameObj){
             displayGame(gameObj) 
             gameDataBar.style.display = "flex"
-            bottomButtons.style.display = "flex"            
+            bottomButtons.style.display = "flex"
+            createGameRoomWebsocketConnection(roomCode)
           }
           else{
               displayErrors()
@@ -62,6 +67,7 @@ function createWordButton(game_word, gameObj) {
     wordElement.textContent = `${game_word.name}`
     wordElement.dataset.category = game_word.category
     wordElement.className = "word-element"
+    wordElement.id = game_word.id
 
     // event listener for clicking on a word
     if (game_word.guessed === true) {
@@ -75,15 +81,15 @@ function createWordButton(game_word, gameObj) {
             switch (true){
             
             case ((teamColorTurn.textContent === "orange") && (game_word.category === 'orange')):
-                gameObj.orange_words_left -= 1
-                gameStatus.orange_words_left = gameObj.orange_words_left
+                wordsLeftNumberOrange.textContent -= 1
+                gameStatus.orange_words_left = wordsLeftNumberOrange.textContent
                 break;
             case ((teamColorTurn.textContent === "orange") && (game_word.category === 'purple')):
                 // change the orange_turn to false
                 gameStatus.orange_turn = false
                 // purple_words_left -= 1
-                gameObj.purple_words_left -= 1
-                gameStatus.purple_words_left = gameObj.purple_words_left
+                wordsLeftNumberPurple.textContent -= 1
+                gameStatus.purple_words_left = wordsLeftNumberPurple.textContent
                 break;
 
             case ((teamColorTurn.textContent === "orange") && (game_word.category === 'neutral')):
@@ -93,15 +99,15 @@ function createWordButton(game_word, gameObj) {
 
             //purple turn
             case ((teamColorTurn.textContent === "purple") && (game_word.category === 'purple')):
-                gameObj.purple_words_left -= 1
-                gameStatus.purple_words_left = gameObj.purple_words_left
+                wordsLeftNumberPurple.textContent -= 1
+                gameStatus.purple_words_left = wordsLeftNumberPurple.textContent
                 break;
             case ((teamColorTurn.textContent === "purple") && (game_word.category === 'orange')):
                 // change the orange_turn to true
                 gameStatus.orange_turn = true
                 // orange_words_left -= 1
-                gameObj.orange_words_left -= 1
-                gameStatus.orange_words_left = gameObj.orange_words_left
+                wordsLeftNumberOrange.textContent -= 1
+                gameStatus.orange_words_left = wordsLeftNumberOrange.textContent
                 break;
 
             case ((teamColorTurn.textContent === "purple") && (game_word.category === 'neutral')):
@@ -124,14 +130,14 @@ function createWordButton(game_word, gameObj) {
             // render the new wordcount and turn
                 if (updatedGameObj.orange_turn){
                     teamColorTurn.textContent = "orange"
-                    wordsLeftNumber.textContent = updatedGameObj.orange_words_left
+                    wordsLeftNumberOrange.textContent = updatedGameObj.orange_words_left
                     if (updatedGameObj.orange_words_left === 0) {
                         gameOver(updatedGameObj, "Orange")
                     }
                 }
                 else{
                     teamColorTurn.textContent = "purple"
-                    wordsLeftNumber.textContent = updatedGameObj.purple_words_left
+                    wordsLeftNumberPurple.textContent = updatedGameObj.purple_words_left
                     if (updatedGameObj.purple_words_left === 0) {
                         gameOver(updatedGameObj, "Purple")
                     }
@@ -169,11 +175,13 @@ function displayGameDetails(gameObj){
   //display turn and score info
   if (gameObj.orange_turn){
     teamColorTurn.textContent = "orange"
-    wordsLeftNumber.textContent = gameObj.orange_words_left
+    wordsLeftNumberOrange.textContent = gameObj.orange_words_left
+    wordsLeftNumberPurple.textContent = gameObj.purple_words_left
   }
   else{
     teamColorTurn.textContent = "purple"
-    wordsLeftNumber.textContent = gameObj.purple_words_left
+    wordsLeftNumberOrange.textContent = gameObj.orange_words_left
+    wordsLeftNumberPurple.textContent = gameObj.purple_words_left
   }
   // store room code in global variable and display on screen
   currentRoomCode = gameObj.room_code
@@ -250,11 +258,13 @@ function endTurn(e){
             
             if (updatedGameObj.orange_turn){
                 teamColorTurn.textContent = "orange"
-                wordsLeftNumber.textContent = updatedGameObj.orange_words_left
+                wordsLeftNumberOrange.textContent = updatedGameObj.orange_words_left
+                wordsLeftNumberPurple.textContent = updatedGameObj.purple_words_left
             }
             else{
                 teamColorTurn.textContent = "purple"
-                wordsLeftNumber.textContent = updatedGameObj.purple_words_left
+                wordsLeftNumberOrange.textContent = updatedGameObj.orange_words_left
+                wordsLeftNumberPurple.textContent = updatedGameObj.purple_words_left
             }
         }
     )}

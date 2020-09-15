@@ -3,7 +3,10 @@ const newGameButton = document.querySelector("#new-game-button")
 
 newGameButton.addEventListener("click", (e) => {  
     modal.style.display = "none"
+    // deleteRound(endTurnButton.dataset.id)
     createNewRound(currentRoomCode)
+
+    // createGameRoomWebsocketConnection(currentRoomCode)
 })
 
 function gameOver(gameObj, winner) {

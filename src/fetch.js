@@ -38,6 +38,7 @@ function updateGameWord(game_word, gameObj) {
       .then(updatedGameWord => {
           const foundGameWord = gameObj.game_words.find(game_word => game_word.id == updatedGameWord.id)
           foundGameWord.guessed = true
+
           console.log("updatedGameWord", updatedGameWord)
       })
 }
@@ -49,6 +50,7 @@ function deleteRound(gameId) {
         .then(r => r.text())
         .then(deleteData => {
           console.log("deleteData", deleteData)
+          // createNewRound(currentRoomCode)
         })
 }
 
@@ -63,7 +65,12 @@ function createNewRound(currentRoomCode) {
       .then(response => response.json())
       .then(newGameData => {
           displayGame(newGameData)
-          wordsLeftNumber.textContent = newGameData.orange_words_left
+          // wordsLeftNumber.textContent = newGameData.orange_words_left
           teamColorTurn.textContent = "orange"
+          spymasterViewButton.textContent = "SPYMASTER VIEW: OFF"
+          createGameRoomWebsocketConnection(currentRoomCode)
+          
+          // console.log("creating new round--------------")
+          // createGameRoomWebsocketConnection(currentRoomCode)
       })
 }
