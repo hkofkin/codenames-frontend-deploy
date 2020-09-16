@@ -13,9 +13,9 @@ function gameOver(gameObj, winner) {
 
     // display all the answers - show the  spymaster view
 
-    window.setTimeout(displayAllColors, 300);
+    // window.setTimeout(displayAllColors, 300);
     
-    window.setTimeout(displayModal, 700, gameObj, winner);    
+    // window.setTimeout(displayModal, 700, gameObj, winner);    
 }
 
 function displayModal(gameObj, winner){

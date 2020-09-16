@@ -56,8 +56,15 @@ function createGameRoomWebsocketConnection(roomCode) {
         }
 
         // newGameButton is clicked
-        else if (msg.message.game_words) {
+        else if (msg.message.type === "new round") {
+            console.log(msg.message)
+            console.log(msg.message.game)
             console.log("the start new game button was clicked", msg.message)
+            
+            displayGame(msg.message.game)
+            //close the modal
+            modal.style.display = "none"
+
         }
         
     };
