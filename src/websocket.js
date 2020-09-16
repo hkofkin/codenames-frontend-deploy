@@ -38,7 +38,8 @@ function createGameRoomWebsocketConnection(roomCode) {
         console.log("FROM RAILS: ", msg);
         
         // Renders any newly created messages onto the page.
-        if (msg.message.game_word) {
+        // `msg.message &&` removes TypeError Cannot read property 'game_word' of undefined
+        if (msg.message && msg.message.game_word) {
             renderGameWord(msg.message.game_word, msg.message.game)
             // updateGameWord(msg.message, endTurnButton.dataset.id)
             console.log("THIS IS RENDERING THE NEW GAME WORD", msg.message.game_word)
@@ -49,7 +50,7 @@ function createGameRoomWebsocketConnection(roomCode) {
         }
 
         // endTurnButton is clicked
-        else if (msg.message.room_code){
+        else if (msg.message && msg.message.room_code){
             // change the turn on the DOM
             if (msg.message.orange_turn){
                 teamColorTurn.textContent = "orange"
@@ -62,7 +63,7 @@ function createGameRoomWebsocketConnection(roomCode) {
         }
 
         // newGameButton is clicked
-        else if (msg.message.type === "new round") {
+        else if (msg.message && msg.message.type === "new round") {
             console.log(msg.message)
             console.log(msg.message.game)
             console.log("the start new game button was clicked", msg.message)
