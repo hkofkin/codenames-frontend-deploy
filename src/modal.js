@@ -11,7 +11,7 @@ newGameButton.addEventListener("click", (e) => {
 
 function gameOver(gameObj, winner) {
 
-    // display all the answers - show the  spymaster view
+    // display all the answers - show the spymaster view
 
     // window.setTimeout(displayAllColors, 300);
     
@@ -25,14 +25,6 @@ function displayModal(gameObj, winner){
     const winnerTag = document.querySelector("#winner-tag")
     winnerTag.textContent = `${winner} Team Wins`
 
-    // // display all the answers - show the  spymaster view
-
-    // const nonFoundWords = wordContainer.querySelectorAll(".word-element")
-
-    // nonFoundWords.forEach(word => {
-    //     word.className = "spymaster-on"
-    //     // word.disabled = false
-    // })
 }
 
 function displayAllColors(){

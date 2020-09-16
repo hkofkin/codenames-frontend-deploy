@@ -117,11 +117,12 @@ function createWordButton(game_word, gameObj) {
                 break;
 
             case (game_word.category === 'bomb'):
-                //game over
-                const winner = gameObj.orange_turn ? "Purple" : "Orange"
-                gameOver(gameObj, winner)
+                //game over (not being used here anymore)
+                // const winner = gameObj.orange_turn ? "Purple" : "Orange"
+                // gameOver(gameObj, winner)
                 break;
             }
+            console.log("gameStatus")
             console.log(gameStatus)
             // PATCH fetch (to update game turn and score)
             updateGame(gameObj.id, gameStatus)

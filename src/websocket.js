@@ -102,9 +102,7 @@ function renderGameWord(gameWord, gameObj) {
 
         }
         displayAllColors()
-        modal.style.display = "block"
-        const winnerTag = document.querySelector("#winner-tag")
-        winnerTag.textContent = `${winner} Team Wins`
+        displayModal(gameObj, winner)
     }
 
     // if ()
