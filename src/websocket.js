@@ -1,5 +1,11 @@
+let socket;
+
 function createGameRoomWebsocketConnection(roomCode) {
     
+    // if there is already an open connection, close it before opening new ws connection
+    // (for example if in a game, but create or join a new/diff game, we don't still want to receive from the old game if others are still playing)
+    console.log("socket", socket)
+    socket && socket.close()
     // Creates the new WebSocket connection.
     socket = new WebSocket('ws://localhost:3000/cable');
      // When the connection is first created, this code runs subscribing the client to a specific chatroom stream in the ChatRoomChannel.
@@ -18,7 +24,7 @@ function createGameRoomWebsocketConnection(roomCode) {
     
     // When the connection is closed, this code will run.
     socket.onclose = function(event) {
-         console.log('WebSocket is closed.');
+        console.log('Existing WebSocket has disconnected.');
     };
     // When a message is received through the websocket, this code will run.
     socket.onmessage = function(event) {            
