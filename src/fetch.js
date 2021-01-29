@@ -1,6 +1,6 @@
 
 function createGame(){
-  return fetch("http://localhost:3000/games", {
+  return fetch("http://codenames-env.eba-fmhix3fu.us-east-2.elasticbeanstalk.com/games", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -11,12 +11,12 @@ function createGame(){
 }
 
 function getGameByRoomCode(roomCode){
-  return fetch(`http://localhost:3000/games/${roomCode}`)
+  return fetch(`http://codenames-env.eba-fmhix3fu.us-east-2.elasticbeanstalk.com/games/${roomCode}`)
   .then(r => r.json())
 }
 
 function updateGame(id, data){
-  return fetch(`http://localhost:3000/games/${id}`, {
+  return fetch(`http://codenames-env.eba-fmhix3fu.us-east-2.elasticbeanstalk.com/games/${id}`, {
     method: 'PATCH',
     headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ function updateGame(id, data){
 }
 
 function updateGameWord(game_word, gameObj) {
-  fetch(`http://localhost:3000/game_words/${game_word.id}`, {
+  fetch(`http://codenames-env.eba-fmhix3fu.us-east-2.elasticbeanstalk.com/game_words/${game_word.id}`, {
       method: 'PATCH',
       headers: {
           'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function updateGameWord(game_word, gameObj) {
 }
 
 function deleteRound(gameId) {
-    fetch(`http://localhost:3000/games/${gameId}`, {
+    fetch(`http://codenames-env.eba-fmhix3fu.us-east-2.elasticbeanstalk.com/games/${gameId}`, {
         method: 'DELETE'
     })
         .then(r => r.text())
@@ -55,7 +55,7 @@ function deleteRound(gameId) {
 }
 
 function createNewRound(currentRoomCode) {
-  fetch(`http://localhost:3000/games/${currentRoomCode}`, {
+  fetch(`http://codenames-env.eba-fmhix3fu.us-east-2.elasticbeanstalk.com/games/${currentRoomCode}`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',

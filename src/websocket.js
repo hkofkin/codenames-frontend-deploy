@@ -7,7 +7,7 @@ function createGameRoomWebsocketConnection(roomCode) {
     console.log("socket", socket)
     socket && socket.close()
     // Creates the new WebSocket connection.
-    socket = new WebSocket('ws://localhost:3000/cable');
+    socket = new WebSocket('ws://codenames-env.eba-fmhix3fu.us-east-2.elasticbeanstalk.com/cable');
      // When the connection is first created, this code runs subscribing the client to a specific chatroom stream in the ChatRoomChannel.
     socket.onopen = function(event) {
         console.log(event)
