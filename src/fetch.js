@@ -8,6 +8,7 @@ function createGame(){
     body: JSON.stringify({room_code: generateRoomCode()})
   })
   .then(r => r.json())
+  .then(data => console.log(data))
 }
 
 function getGameByRoomCode(roomCode){
